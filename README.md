@@ -34,3 +34,12 @@ Then run
 vagrant status
 ```
 to check guest os status.
+
+
+- cp4
+download file, two syntax
+```
+$ curl [URL] -o [FILENAME]
+$ wget -O [FILENAME] [URL]
+```
+
