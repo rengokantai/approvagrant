@@ -167,3 +167,51 @@ sudo apt-add-repository ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install ansible
 ```
+- cp8
+vm config
+```
+config.vm.provider "virtualbox" do |v|
+    v.name = "my-project"
+    v.gui = true
+    v.memory = 4096
+    v.cpus = 2
+    v.customize ["modifyvm", :id, "--cpus", "2"]  #same as above
+    v.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
+end
+```
+package a iso file to box(?)
+```
+vagrant package --base my--project
+```
+run with debug mode:
+```
+vagrant up --debug
+```
+check guest ram
+```
+free m
+cat /proc/meminfo
+sudo lshw
+```
+memory test:
+```
+/bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+/sbin/mkswap /var/swap.1
+/sbin/swapon /var/swap.1
+```
+
+config guest machine's hostname
+```ruby
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty32"
+  config.vm.hostname = "www.example.com"
+  config.vm.post_up_message = "Finished"
+  config.vm.boot_timeout = 1  #boot time. if exceeds,give prompt
+  config.vm. graceful_halt_timeout = 5 #time before halt
+end
+```
+check using ``` hostname -f```  
+And change host os hostfile
+```
+127.0.0.1 www.example.com
+```
