@@ -208,10 +208,66 @@ Vagrant.configure(2) do |config|
   config.vm.post_up_message = "Finished"
   config.vm.boot_timeout = 1  #boot time. if exceeds,give prompt
   config.vm. graceful_halt_timeout = 5 #time before halt
+  
+  config.ssh.username
+  config.ssh.password
+  config.ssh.host
+  config.ssh.port
+  config.ssh.private_key_path
+  config.ssh.insert_key = false #for public
+  
+  config.vm.box_download_checksum_type = "sha256"
+  config.vm.box_download_checksum = "01234567890"
 end
 ```
 check using ``` hostname -f```  
 And change host os hostfile
 ```
 127.0.0.1 www.example.com
+```
+Get checksum  
+```
+# OS X
+shasum -a 256 filename.box
+# On Windows
+openssl dgst -sha256 filename.box
+```
+Add box with checksum
+```
+vagrant box add boxname --checksum-type sha256 --checksum 123456 <link>
+```
+
+port collision.  
+Fix 
+```
+config.vm.network :forwarded_port, guest: 80, host: 8800, auto_correct: true #if 8800 already used, may forward to 2201
+config.vm.usable_port_range = (2200..2250)  #defaults to 2200..2250.
+```
+
+- cp10
+multi machine management  
+Ex:  
+```ruby
+Vagrant.configure(2) do |config|
+  config.vm.define "web" do |web|
+    web.vm.box = "chef/centos-6.5-i386"
+    web.ssh.insert_key = false
+    web.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+    end
+  end
+
+  config.vm.define "db" do |db|
+    db.vm.box = "ubuntu/trusty32"
+  end
+end
+```
+
+To start individual:
+```
+vagrant up web
+```
+define primary machine:
+```
+config.vm.define "web", primary: true do |web|
 ```
