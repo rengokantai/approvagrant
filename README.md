@@ -35,11 +35,59 @@ vagrant status
 ```
 to check guest os status.
 
+- cp3
+init a guest os
+```
+vagrant init -m ubuntu/trusty32
+```
+-m :minimal Vagrantfile will be generated
+-f : will rewrite Vagrantfile if already exists
+
 
 - cp4
 download file, two syntax
 ```
 $ curl [URL] -o [FILENAME]
+$ curl http://xxx.box > xxx.box
 $ wget -O [FILENAME] [URL]
 ```
+
+- cp5
+make first box:  
+How to package:  
+```
+vagrant package --output name.box
+```
+(Can be used for running or halted. If running, it will be shut down.)  
+
+
+list all boxes:  
+```
+ls -la $VAGRANT_HOME/.vagrant.d/boxes/
+```
+Download box
+```
+vagrant box add [NAME] [ADDRESS]       //address may be http://, file:///
+```
+Ex:
+```
+vagrant box add first-box first-box.box
+```
+
+jekyll: build first page
+```
+jekyll new -f .
+jekyll build
+jekyll serve -H 0.0.0.0 --detach
+```
+Repackaging (first,delete old version box)
+
+syntax: vagrant box repackage NAME PROVIDER VERSION  
+```
+vagrant box repackage boxname
+```
+
+
+
+
 
